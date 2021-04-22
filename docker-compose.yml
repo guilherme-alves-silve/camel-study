@@ -1,0 +1,37 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: camel
+      MYSQL_ROOT_PASSWORD: negociacao
+    ports:
+      - 3306:3306
+    networks:
+      - mysql-compose-network
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 9090:8080
+    networks:
+      - mysql-compose-network
+
+  activemq:
+    image: rmohr/activemq
+    ports:
+      - 8161:8161
+      - 9191:61616
+
+  tomcat:
+    image: tomcat:8.5.65-jdk8-corretto
+    ports:
+      - 8888:8888
+
+networks: 
+  mysql-compose-network:
+    driver: bridge
